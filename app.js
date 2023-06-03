@@ -77,7 +77,8 @@ app.post("/", function(req, res){
   const item = new Item({
     name: itemName
   });
-  if (listName === "Today") {
+  if (itemName != "") {
+    if (listName === "Today") {
     item.save();
     res.redirect("/");
   } else {
@@ -86,6 +87,13 @@ app.post("/", function(req, res){
       const foundList = await List.findOne({ name: listName }, "name items");
       foundList.items.push(item);
       foundList.save();
+      res.redirect("/" + listName);
+    }
+  }
+  } else {
+    if (listName === "Today") {
+      res.redirect("/");
+    } else {
       res.redirect("/" + listName);
     }
   }
